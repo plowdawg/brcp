@@ -1,0 +1,35 @@
+div#action_panel
+{
+	background: #fff;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	width: 800px;
+	min-height: 300px;
+	position: absolute;
+	left: 50%;
+	margin-left: -400px;
+	top: 200px;
+	padding: 10px;
+}
+
+div.action_item
+{
+	text-align: center;
+	width:130px;
+	float: left;
+	margin-left: 5px;
+}
+
+div.action_item:hover
+{
+	background: #c00;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+div.action_item img
+{
+	display: block;
+}
