@@ -12,16 +12,16 @@ if(isset($_GET["zeus_uri"]))
 	external_file_loader("../config");
 	date_default_timezone_set ($config["timezone"]);
 	set_error_handler("zeus_error_handler");
-	//register_shutdown_function("zeus_fatal_handler");
+	register_shutdown_function("zeus_fatal_handler");
 	//support for ID needs to be added and needs to be made into a router module.
 	
 	require("../config/database.php");
-	require("../system/Controller.php");
+	require("./Controller.php");
 	require("../controllers/ApplicationController.php");
+	require("./model.php");
 	require("./modules/controller/module.php");
 	require("./router.php");
 	$router = new Router($_GET["zeus_uri"]);
-	$uripath = explode("/",$_GET["zeus_uri"]);
 	$controller = $router->getController();
 	require("../controllers/".$controller.".php");
 	$action = $router->getAction();
