@@ -17,6 +17,11 @@ class UsersController extends ApplicationController
 		$this->renderView($data);
 	}
 	
+	public function sign_in()
+	{
+		$this->render("index",array("alert"=>"Invalid user name or password."));
+	}
+	
 	
 	
 }

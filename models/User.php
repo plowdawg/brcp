@@ -6,16 +6,11 @@
 		public function __construct()
 		{
 			Model::__construct();
-			//array_push($this->accessibleAttributes,"email");
 		}
 		
-		public function index()
+		public function sign_in()
 		{
-		}
-		
-		public function login()
-		{
-	
+			
 		}
 		
 	}

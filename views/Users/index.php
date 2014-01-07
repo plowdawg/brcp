@@ -9,7 +9,11 @@
 <img src="../images/background.jpg" alt="background" id="background" />
 <div id="login_box">
 <h1>User Login</h1>
-<form method="post">
+<?php if(isset($alert))
+{?>
+	<div class="alert"><?php echo $alert; ?></div>
+<?php } ?>
+<form method="post" action="sign_in">
 	<table>
 		<tr><td>Login:</td><td><input name="username" /></td></tr>
 		<tr><td>Password:</td><td><input name="password" type="password" /></td></tr>

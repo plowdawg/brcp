@@ -78,3 +78,13 @@ input[type="submit"],input[type="button"]
 	color: #fff;
 	border:none;
 }
+
+div.alert
+{
+	background: #f00;
+	color: #fff;
+	text-align: center;
+	font-familY: "Arial";
+	font-size: 16pt;
+	padding: 5px;
+}

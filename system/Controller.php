@@ -2,6 +2,9 @@
 class Controller
 {
 	private $name;
+	private $notice;
+	private $alert;
+	
 	public function __construct()
 	{
 		$this->modelRequireer();
@@ -15,6 +18,8 @@ class Controller
 		global $config;
 		$viewFolder = $this->getCallingClass(debug_backtrace());
 		$function = $this->getCallingFunction(debug_backtrace());
+		if(isset($this->notice)) $notice = $this->notice;
+		if(isset($this->alert)) $alert = $this->alert;
 		include("../views/".$viewFolder."/".$function.".php");
 	}
 	
@@ -62,5 +67,26 @@ class Controller
 	
 	public function before_filter()
 	{
+	}
+	
+	public function render()
+	{
+		$args = func_get_args();
+		if(count($args)==1)
+		{
+			call_user_func(array($this,$args[0]));
+		}
+		if(count($args) == 2)
+		{
+			if(!is_array($args[1]))
+			{
+				trigger_error("Second argument of render must be an array");
+			}
+			foreach($args[1] as $key=>$value)
+			{
+				$this->$key = $value;
+			}
+			call_user_func(array($this,$args[0]));
+		}
 	}
 }
