@@ -20,8 +20,15 @@ class UsersController extends ApplicationController
 	public function sign_in()
 	{
 		$user = new User();
-		
-		$this->render("index",array("alert"=>"Invalid user name or password."));
+		$data["user"] = $user->sign_in();
+		if($data["user"]["login"])
+		{
+			$this->render("index",array("alert"=>"You are now logged in"));
+		}
+		else
+		{
+			$this->render("index",array("alert"=>"Invalid user name or password."));
+		}
 	}
 	
 	

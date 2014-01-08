@@ -67,6 +67,11 @@ class Model
 		return $object;
 	}
 	
+	public function execute()
+	{
+		return $this->dbcon->execute($this->name);
+	}
+	
 	private function  establishFieldsFromDb()
 	{
 		$fields = $this->dbcon->getColumnNames($this->name);

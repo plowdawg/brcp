@@ -9,7 +9,7 @@
 		
 		public function sign_in()
 		{
-			
+			return $this->where(["login"=>$_POST["username"]])->execute();
 		}
 		
 	}

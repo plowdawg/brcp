@@ -51,8 +51,8 @@ function zeus_fatal_handler()
 		$errfile = $error["file"];
 		$errline = $error["line"];
 		$errstr = $error["message"];
+		zeus_error_handler($errno,$errstr,$errfile,$errline);
 	}
-	zeus_error_handler($errno,$errstr,$errfile,$errline);
 }
 
 function zeus_error_handler($errno,$errstr,$errfile,$errline)

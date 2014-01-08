@@ -50,20 +50,79 @@ class DBModule
 	
 	public function where($sqlWhere)
 	{
-		$this->whereStatement = $sqlWhere;
+		if(!is_array($sqlWhere))
+		{
+			trigger_error("Where statement must be an array");
+		}
+		if(!isset($this->whereStatement))
+		{
+			$this->whereStatement = "WHERE ";
+		}
+		$results = $this->where_statement_formater($sqlWhere);
+		$this->whereStatement .= $results[0];
 		return $this;
 	}
+	
+	
+	public function where_statement_formater($sqlWhere)
+	{
+		//returns array(string,array)  where string is a question marked string and array are all values
+		
+		if(!isset($this->whereValues)) $this->whereValues = array();
+		$wherestmt = "";
+		foreach($sqlWhere as $key=>$value)
+		{
+			$wherestmt .= " AND $key=?";
+			array_push($this->whereValues,$value);
+		}
+		
+		
+		return [$this->sanitize_where_statement($wherestmt),$this->whereValues];
+		
+	}
+	
+	private function sanitize_where_statement($whereStmt)
+	{
+		$patterns = array();
+		$patterns[0] = '/WHERE  AND/';
+		$patterns[1] = '/^ AND/';
+		$patterns[2] = '/WHERE WHERE/';
+		$replacements = array();
+		$replacements[0] = 'WHERE';
+		$replacements[1] = "";
+		$replacements[2] = $replacements[0];
+		$whereStmt = preg_replace($patterns,$replacements,$whereStmt);
+		return $whereStmt;
+	}
+	
 	
 	public function delete($table)
 	{
 		$table = inflector(strtolower($table));
-		$st = $this->con->prepare("DELETE FROM $table WHERE ".$this->whereStatement);
+		$st = $this->con->prepare("DELETE FROM $table ".$this->whereStatement,$this->whereValues);
 		if(!$st)
 		{
 			trigger_error("MySQL Adapter Error in Delete. Error Info: ".print_r($st->errorInfo()),E_USER_ERROR);
 			die();
 		}
 		$st->execute() or trigger_error("MySQL Adapter in Delete: ".print_r($st->errorinfo()),E_USER_ERROR);
+	}
+	
+	public function execute($table)
+	{
+		if(!isset($this->whereStatement))
+		{
+			trigger_error("No where statement set");
+		}
+		
+		$table = inflector(strtolower($table));
+		$st = $this->con->prepare("SELECT * FROM $table ".$this->whereStatement);
+		for($i = 0; $i < count($this->whereValues); $i++)
+		{
+			$st->bindParam($i+1,$this->whereValues[$i]);
+		}
+		$st->execute() or trigger_error("MySql Adapter Error in All: ".print_r($st->errorinfo()),E_USER_ERROR);;
+		return $st->fetchAll()[0];
 	}
 	
 	public function getColumnNames($table)
