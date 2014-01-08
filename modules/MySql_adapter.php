@@ -122,7 +122,7 @@ class DBModule
 			$st->bindParam($i+1,$this->whereValues[$i]);
 		}
 		$st->execute() or trigger_error("MySql Adapter Error in All: ".print_r($st->errorinfo()),E_USER_ERROR);;
-		return $st->fetchAll()[0];
+		return $st->fetchAll();
 	}
 	
 	public function getColumnNames($table)

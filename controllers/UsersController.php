@@ -21,7 +21,7 @@ class UsersController extends ApplicationController
 	{
 		$user = new User();
 		$data["user"] = $user->sign_in();
-		if($data["user"]["login"])
+		if(isset($data["user"][0]["login"]))
 		{
 			$this->render("index",array("alert"=>"You are now logged in"));
 		}
