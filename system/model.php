@@ -42,7 +42,7 @@ class Model
 		{ 
 			return false;
 		}
-		$this->dbcon->save(array_slice($this->avalibleAttributes,1),$this->name);
+		$this->dbcon->save(array_slice($this->accessibleAttributes,1),$this->name);
 		$this->execute_filters($this->afterFilters);
 		return true;
 	}
@@ -110,16 +110,21 @@ class Model
 	{
 		foreach($fieldsArray as $field)
 		{
-			$this->avalibleAttributes[$field[0]]=null;
+			$this->accessibleAttributes[$field[0]]=null;
 		}
 	}
 	
 	public function set($field_array)
 	{
+		//die(var_dump($field_array));
+		if(isset($field_array[0]))
+		{
+			$field_array = $field_array[0];
+		}
 		if(!is_array($field_array)) trigger_error("Set takes an array.");
 		foreach($field_array as $key=>$value)
 		{
-			$this->avalibleAttributes[$key] = $value;
+			$this->accessibleAttributes[$key] = $value;
 		}
 	}
 	
@@ -144,7 +149,7 @@ class Model
 	private function filter_validates_presence_of($attr_name)
 	{
 		//die(var_dump($attr_name));
-		if(isset($this->avalibleAttributes[$attr_name]))
+		if(isset($this->accessibleAttributes[$attr_name]) && !empty($this->accessibleAttributes[$attr_name]))
 		{
 			return true;
 		}
@@ -153,6 +158,11 @@ class Model
 			$this->add_error("$attr_name cannot be blank.");
 			return false;
 		}
+	}
+	
+	public function update()
+	{
+		return $this->dbcon->update($this->accessibleAttributes,$this->name);
 	}
 }
 

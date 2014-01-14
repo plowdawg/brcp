@@ -17,6 +17,7 @@ div.action_item
 {
 	text-align: center;
 	width:130px;
+	height: 200px;
 	float: left;
 	margin-left: 5px;
 }

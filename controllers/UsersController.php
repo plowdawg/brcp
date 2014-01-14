@@ -17,13 +17,33 @@ class UsersController extends ApplicationController
 		$this->renderView($data);
 	}
 	
+	public function admin_panel()
+	{
+		$this->renderView();
+	}
+	
 	public function sign_in()
 	{
 		$user = new User();
 		$data["user"] = $user->sign_in();
-		if(isset($data["user"][0]["login"]))
+		if(isset($data["user"]->accessibleAttributes["login"]))
 		{
-			$this->render("index",array("alert"=>"You are now logged in"));
+			$data["user"]->accessibleAttributes["session_id"] = session_id();
+			if($data["user"]->update())
+			{
+				if($data["user"]->accessibleAttributes["user_level"] == 1)
+				{
+					$this->redirect("admin_panel");
+				}
+				else
+				{
+					$this->redirect("user_panel");
+				}
+			}
+			else
+			{
+				$this->render("index",["alert"=>"Problem updating DB."]);
+			}
 		}
 		else
 		{

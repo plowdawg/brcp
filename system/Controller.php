@@ -54,7 +54,7 @@ class Controller
 		return $modelName;
 	}
 	
-	private function redirect($url)
+	public function redirect($url)
 	{
 		Header("location: $url");
 	}

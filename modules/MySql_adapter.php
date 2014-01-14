@@ -122,7 +122,7 @@ class DBModule
 			$st->bindParam($i+1,$this->whereValues[$i]);
 		}
 		$st->execute() or trigger_error("MySql Adapter Error in All: ".print_r($st->errorinfo()),E_USER_ERROR);;
-		return $st->fetchAll();
+		return $st->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
 	public function getColumnNames($table)
@@ -137,8 +137,26 @@ class DBModule
 			die();
 		}
 		$st->execute();
-		$columnNames = $st->fetchAll();
+		$columnNames = $st->fetchAll(PDO::FETCH_NUM);
 		return $columnNames;
+	}
+	
+	
+	public function update($keyvalues,$table)
+	{
+		$table = inflector(strtolower($table));
+		$query = "UPDATE $table SET ";
+		$id = $keyvalues["id"];
+		unset($keyvalues["id"]);
+		
+		foreach($keyvalues as $key=>$value)
+		{
+			$query .= "$key=\"$value\", ";
+		}
+		$query = preg_replace('/,\\s$/'," WHERE id=$id",$query);
+		$st = $this->con->prepare($query);
+		return $st->execute() or trigger_error("MySql Adapter Error in Update: ".print_r($st->errorinfo()),E_USER_ERROR);;
+		
 	}
 	
 }

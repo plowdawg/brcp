@@ -23,7 +23,7 @@
 		public function sign_in()
 		{
 			//return $this->where(["login"=>$_POST["username"],"password"=>password_hash($_POST["password"],PASSWORD_BCRYPT,['salt'=>$this->salt])])->execute();
-			return $this->where(["login"=>$_POST["username"],"password"=>md5($_POST["password"])])->execute();
+			return new User($this->where(["login"=>$_POST["username"],"password"=>md5($_POST["password"])])->execute());
 		}
 		
 		public function validates_email()
@@ -40,6 +40,8 @@
 		
 		public function validates_password()
 		{
+			global $router;
+			if($router->getAction() != "create") return true;
 			if($_POST["password"] != $_POST["confirm_password"])
 			{
 				//die("passwords don't match");
