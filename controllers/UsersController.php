@@ -31,6 +31,28 @@ class UsersController extends ApplicationController
 		}
 	}
 	
+	public function new_user()
+	{
+		if(!isset($data))
+		{
+			$data["user"] = new User();
+		}
+		$this->renderView($data);
+	}
+	
+	public function create()
+	{
+		$data["user"] = new User(["login"=>$_POST["username"],"first_name"=>$_POST["first_name"],"last_name"=>$_POST["last_name"],
+		"email"=>$_POST["email"],"password"=>md5($_POST["password"]),"user_level"=>$_POST["level"]]);
+		if($data["user"]->save())
+		{
+			$this->render("new_user",["alert"=>"Successfully created user."]);
+		}
+		else
+		{
+			$this->render("new_user",["alert"=>"Failed to create user."]);
+		}
+	}
 	
 	
 }

@@ -4,14 +4,21 @@
 class Model
 {
 	private $errors = array();
-	private $beforeFilters = array();
+	private $beforeFilters = array();//[[filtername,args],...]
+	private $afterFilters = array();
 	public $accessibleAttributes = array();
-	protected $avalibleAttributes = array();
+	//protected $avalibleAttributes = array();
 	public function __construct()
 	{
 		$this->name = $this->establishName();
 		$this->connectToDatabase();
 		$this->establishFieldsFromDb();
+		if(func_num_args() > 0)
+		{
+			$set_values = func_get_args()[0][0];
+			if(!is_array($set_values)) raise_error("Construct only takes an array.");
+			$this->set($set_values);
+		}
 	}
 	
 	public function all()
@@ -19,20 +26,25 @@ class Model
 		return $returnedValues = $this->dbcon->all($this->name);
 	}
 	
-	public function addError($error)
+	public function add_error($error)
 	{
-		array_push($this->errors,$error);
+		$this->errors=$error;
 	}
 	
-	public function getErrors()
+	public function get_errors()
 	{
 		return $this->errors;
 	}
 	
 	public function save()
 	{
-		//we don't need the id so...
+		if(!$this->execute_filters($this->beforeFilters))
+		{ 
+			return false;
+		}
 		$this->dbcon->save(array_slice($this->avalibleAttributes,1),$this->name);
+		$this->execute_filters($this->afterFilters);
+		return true;
 	}
 	
 	public function where($whereStmt)
@@ -46,9 +58,26 @@ class Model
 		$this->dbcon->delete($this->name);
 	}
 	
-	public function addBeforeFilter($filter)
+	public function add_before_filter($filter)
 	{
+		if(!is_array($filter))
+		{
+			$filter = array($filter,array());
+		}
+		if(!isset($filter[1]))
+		{
+			$filter[1] = array();
+		}
+		if(!is_array($filter[1]))
+		{
+			trigger_error("add_before_filter's second argument must be an array.");
+		}
 		array_push($this->beforeFilters,$filter);
+	}
+	
+	public function add_after_filter($filter)
+	{
+		array_push($this->afterFilters,$filter);
 	}
 	
 	private function connectToDatabase()
@@ -82,6 +111,47 @@ class Model
 		foreach($fieldsArray as $field)
 		{
 			$this->avalibleAttributes[$field[0]]=null;
+		}
+	}
+	
+	public function set($field_array)
+	{
+		if(!is_array($field_array)) trigger_error("Set takes an array.");
+		foreach($field_array as $key=>$value)
+		{
+			$this->avalibleAttributes[$key] = $value;
+		}
+	}
+	
+	private function execute_filters($filter_array)
+	{
+		foreach($filter_array as $filter)
+		{
+
+			if(!call_user_func_array([$this,$filter[0]],$filter[1]))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public function validates_presence_of($attr_name)
+	{
+		$this->add_before_filter(["filter_validates_presence_of",[$attr_name]]);
+	}
+	
+	private function filter_validates_presence_of($attr_name)
+	{
+		//die(var_dump($attr_name));
+		if(isset($this->avalibleAttributes[$attr_name]))
+		{
+			return true;
+		}
+		else
+		{
+			$this->add_error("$attr_name cannot be blank.");
+			return false;
 		}
 	}
 }
