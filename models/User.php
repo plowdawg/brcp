@@ -58,7 +58,17 @@
 			}
 			return true;
 		}
-		
+		public function create_system_user()
+		{
+		//Linux
+		//Mac
+		}
+		public function create_linux_user()
+		{
+			global $config;
+			exec("echo \"".$config["sudo_password"]."\" | sudo useradd ".$this->accessibleAttributes["login"]);
+			#exec("echo \:
+		}
 		
 	}
 	

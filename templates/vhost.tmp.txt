@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+    #NameVirtualHost 99.99.99.99
+    ServerName %domain%
+    ServerSignature Off
+    ProxyRequests Off
+    <Proxy *>
+        Order Allow,Deny
+        Allow from all
+    </Proxy>
+    ProxyPass / http://localhost:%port%/
+    ProxyPassReverse / http://localhost:%port%/
+    ProxyVia On
+</VirtualHost>
