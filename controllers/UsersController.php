@@ -31,7 +31,7 @@ class UsersController extends ApplicationController
 			$data["user"]->accessibleAttributes["session_id"] = session_id();
 			if($data["user"]->update())
 			{
-				if($data["user"]->accessibleAttributes["user_level"] == 1)
+				if($data["user"]->accessibleAttributes["user_level"] == 2)
 				{
 					$this->redirect("admin_panel");
 				}
