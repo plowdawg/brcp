@@ -67,7 +67,40 @@ class Controller
 	
 	public function before_filter()
 	{
+		global $router;
+		//die("action: ".$router->getAction());
+		$args = func_get_args();
+		if(func_num_args() == 2)
+		{
+			if(!is_array($args[1]))
+			{
+				trigger_error("2nd arg must be an array");
+			}
+			if(isset($args[1]["except"]))
+			{
+				foreach($args[1]["except"] as $exception)
+				{
+					if($exception == $router->getAction())
+					{
+						return;
+					}
+				}
+			}
+			if(isset($args[1]["only"]))
+			{
+				foreach($args[1]["only"] as $permitted)
+				{
+					if($permitted == $router->getAction())
+					{
+						call_user_func([$this,$permitted]);
+						return;
+					}
+				}
+			}
+		}
+		call_user_func([$this,$args[0]]);
 	}
+	
 	
 	public function render()
 	{

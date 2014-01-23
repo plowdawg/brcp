@@ -26,6 +26,7 @@
 		<tr><td>Email:</td><td><input name="email" type="email" /></td></tr>
 		<tr><td>Password:</td><td><input name="password" type="password" /></td></tr>
 		<tr><td>Confirm Password:</td><td><input name="confirm_password" type="password" /></td></tr>
+		<tr><td>Domain:</td><td><input name="domain" /></td></tr>
 		<tr><td>User Level:</td><td><select name="level">
 										<option value="1">User</option>
 										<option value="2">Administrator</option>

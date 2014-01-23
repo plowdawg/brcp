@@ -18,6 +18,7 @@
 			$this->validates_presence_of("first_name");
 			$this->validates_presence_of("last_name");
 			$this->validates_presence_of("email");
+			$this->validates_presence_of("domain");
 		}
 		
 		public function sign_in()
@@ -25,6 +26,13 @@
 			//return $this->where(["login"=>$_POST["username"],"password"=>password_hash($_POST["password"],PASSWORD_BCRYPT,['salt'=>$this->salt])])->execute();
 			return new User($this->where(["login"=>$_POST["username"],"password"=>md5($_POST["password"])])->execute());
 		}
+		
+		
+		public function get_user_from_session()
+		{
+			return new User($this->where(["session_id"=>session_id()])->execute());
+		}
+		
 		
 		public function validates_email()
 		{

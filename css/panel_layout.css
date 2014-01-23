@@ -22,6 +22,12 @@ div.action_item
 	margin-left: 5px;
 }
 
+div.action_item a
+{
+	color: #000;
+	text-decoration: none;
+}
+
 div.action_item:hover
 {
 	background: #c00;
@@ -33,4 +39,10 @@ div.action_item:hover
 div.action_item img
 {
 	display: block;
+}
+
+div#action_panel table
+{
+	left: 0px;
+	border: 1px solid #fff;
 }

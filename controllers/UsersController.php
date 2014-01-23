@@ -51,6 +51,13 @@ class UsersController extends ApplicationController
 		}
 	}
 	
+	public function sign_out()
+	{
+		$this->current_user->accessibleAttributes["session_id"] = NULL;
+		$this->current_user->where(["session_id"=>session_id()])->execute();
+		$this->redirect("./index");
+	}
+	
 	public function new_user()
 	{
 		if(!isset($data))
@@ -63,7 +70,7 @@ class UsersController extends ApplicationController
 	public function create()
 	{
 		$data["user"] = new User(["login"=>$_POST["username"],"first_name"=>$_POST["first_name"],"last_name"=>$_POST["last_name"],
-		"email"=>$_POST["email"],"password"=>md5($_POST["password"]),"user_level"=>$_POST["level"]]);
+		"email"=>$_POST["email"],"password"=>md5($_POST["password"]),"user_level"=>$_POST["level"],"domain"=>$_POST["domain"]]);
 		if($data["user"]->save())
 		{
 			$this->render("new_user",["alert"=>"Successfully created user."]);
@@ -74,5 +81,11 @@ class UsersController extends ApplicationController
 		}
 	}
 	
+	public function manage()
+	{
+		$data["user"] = new User();
+		$data["users"] = $data["user"]->all();
+		$this->renderView($data);
+	}
 	
 }

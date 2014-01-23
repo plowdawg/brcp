@@ -89,3 +89,15 @@ div.alert
 	font-size: 16pt;
 	padding: 5px;
 }
+
+div#form_box table.data
+{
+	text-align: left;
+	border: 1px solid #000;
+	border-collapse: collapse;
+}
+
+div#form_box table.data tr th
+{
+	border-bottom: 1px solid #000;
+}
