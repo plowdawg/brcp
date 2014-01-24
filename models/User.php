@@ -61,6 +61,7 @@
 		public function create_system_user()
 		{
 		//Linux
+		create_linux_user();
 		//Mac
 		}
 		public function create_linux_user()
