@@ -83,7 +83,6 @@ class Model
 	private function connectToDatabase()
 	{
 		global $config;
-		require_once("../modules/".$config["database_adapter_module"].".php");
 		$this->dbcon = new DBModule();
 	}
 	private function establishName()

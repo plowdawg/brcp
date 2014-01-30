@@ -5,7 +5,7 @@ class ApplicationController extends Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->before_filter("check_login",["except"=>["index","sign_in"]]);
+		$this->before_filter("check_login",["except"=>["index","sign_in","verify_login_json"]]);
 	}
 	
 	public function check_login()

@@ -17,6 +17,24 @@ class UsersController extends ApplicationController
 		$this->renderView($data);
 	}
 	
+	public function verify_login_json()
+	{
+		if(!isset($_POST["session_id"]))
+		{
+			echo json_encode(["error"=>"Could not read a posted session_id"]);
+			die();
+		}
+		$user = new User((new User)->where(["session_id"=>$_POST["session_id"]])->execute()[0]);
+		//die(var_dump($user));
+		if(isset($user->accessibleAttributes["login"]))
+		{
+			echo json_encode(["logged_in"=>true]);
+		}
+		else
+		{
+			echo json_encode(["logged_in"=>false]);
+		}
+	}
 	public function admin_panel()
 	{
 		$this->renderView();
@@ -24,6 +42,7 @@ class UsersController extends ApplicationController
 	
 	public function sign_in()
 	{
+		session_regenerate_id(true);
 		$user = new User();
 		$data["user"] = $user->sign_in();
 		if(isset($data["user"]->accessibleAttributes["login"]))
@@ -51,10 +70,11 @@ class UsersController extends ApplicationController
 		}
 	}
 	
+	
 	public function sign_out()
 	{
 		$this->current_user->accessibleAttributes["session_id"] = NULL;
-		$this->current_user->where(["session_id"=>session_id()])->execute();
+		$this->current_user->update();
 		$this->redirect("./index");
 	}
 	
