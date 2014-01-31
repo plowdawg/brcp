@@ -1,8 +1,8 @@
 <?php
 if( !defined( '_JEXEC' ) && !defined( '_VALID_MOS' ) ) die( 'Restricted access' );
 //Load in the appropriate models and configs from BRCP
-$path = "C:/wamp/www/";// For FirePHP
-require_once($path."FirePHPCore/FirePHP.class.php");
+//$path = "C:/wamp/www/";// For FirePHP
+//require_once($path."FirePHPCore/FirePHP.class.php");
 
 class ext_brcp_authentication
 {
@@ -23,12 +23,12 @@ class ext_brcp_authentication
 
 			$result = curl_exec($connection);
 			ob_start();
-			$firephp = FirePHP::getInstance(true);
-			$firephp->log($_REQUEST["username"],"USERNAME");
-			$firephp->log($credentials["domain"],"Domain");
-			$firephp->log($result,"Result");
+			//$firephp = FirePHP::getInstance(true);
+			//$firephp->log($_REQUEST["username"],"USERNAME");
+			//$firephp->log($credentials["domain"],"Domain");
+			//$firephp->log($result,"Result");
 			$json = json_decode($result,true);
-			$firephp->log($json,"JSON");
+			//$firephp->log($json,"JSON");
 
 			//TODO: FIX THIS.
 			if(isset($json) && $json["logged_in"] ==  true)
