@@ -31,6 +31,12 @@
  * Main File for the standalone version
  */
 // When eXtplorer is running as a component in Joomla! or Mambo, we deny access to this standalone version
+$path = "/Users/travis/Documents/www/";// For FirePHP
+require_once($path."FirePHPCore/FirePHP.class.php");//Debug
+$firephp = FirePHP::getInstance(true);
+ob_start();
+$firephp->setEnabled(true);
+$firephp->log("Index","Index");
 if( stristr( $_SERVER['SCRIPT_NAME'], 'com_extplorer') || stristr( $_SERVER['SCRIPT_NAME'], 'components')) {
 	header( 'HTTP/1.0 404 Not Found');
 	header( 'Location: http://'.$_SERVER['HTTP_HOST']);
