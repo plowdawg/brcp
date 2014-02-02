@@ -171,5 +171,6 @@ class ext_brcp_authentication
 	function onLogout()
 	{
 		$_SESSION['credentials_brcp']['username'] = NULL;
+		logout();
 	}
 }
