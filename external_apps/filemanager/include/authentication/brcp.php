@@ -22,7 +22,7 @@ class ext_brcp_authentication
 			curl_setopt ($connection, CURLOPT_RETURNTRANSFER, true);
 
 			$result = curl_exec($connection);
-			ob_start();
+			//ob_start();
 			//$firephp = FirePHP::getInstance(true);
 			//$firephp->log($_REQUEST["username"],"USERNAME");
 			//$firephp->log($credentials["domain"],"Domain");
