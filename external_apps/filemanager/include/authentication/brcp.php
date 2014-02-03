@@ -8,52 +8,41 @@ class ext_brcp_authentication
 {
 	function onAuthenticate($credentials,$options=null)
 	{
-			
-			$credentials["username"] = $_REQUEST["username"];
-			$credentials["domain"] = $_REQUEST["domain"]."user/verify_login_json";
-			
-			$connection = curl_init($credentials["domain"]);
+
+			$domain = $credentials["domain"]."user/verify_login_json";
+			$connection = curl_init($domain);
 			$fields = array("session_id"=>urlencode($credentials["username"]));
 			$fields_string = "";
 			foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-			curl_setopt($connection,CURLOPT_URL,$credentials["domain"]);
+			//curl_setopt($connection,CURLOPT_URL,$credentials["domain"]);
 			curl_setopt($connection,CURLOPT_POST,count($fields));
 			curl_setopt($connection,CURLOPT_POSTFIELDS,$fields_string);
 			curl_setopt ($connection, CURLOPT_RETURNTRANSFER, true);
 
 			$result = curl_exec($connection);
-			//ob_start();
-			//$firephp = FirePHP::getInstance(true);
-			//$firephp->log($_REQUEST["username"],"USERNAME");
-			//$firephp->log($credentials["domain"],"Domain");
-			//$firephp->log($result,"Result");
 			$json = json_decode($result,true);
-			//$firephp->log($json,"JSON");
+			$firephp = FirePHP::getInstance(true);
+			$firephp->log($json,"JSON");
 
 			//TODO: FIX THIS.
 			if(isset($json) && $json["logged_in"] ==  true)
 			{
-				$data=ext_find_user( "admin",null );
-				require_once( _EXT_PATH.'/libraries/PasswordHash.php');
-				$hasher = new PasswordHash(8, FALSE);
-				$result = $hasher->CheckPassword("admin", $data[1]);
-				$_SESSION['file_mode']='extplorer';
-				//$data=ext_find_user( "admin","admin" );
-				$_SESSION['credentials_extplorer']['username']	= $data[0];
-				$_SESSION['credentials_extplorer']['password']	= $data[1];
-				//$_SESSION['file_mode'] = 'extplorer';
-				$GLOBALS["home_dir"]	= str_replace( '\\', '/', $data[2] );
-				$GLOBALS["home_url"]	= $data[3];
-				$GLOBALS["show_hidden"]	= $data[4];
-				$GLOBALS["no_access"]	= $data[5];
-				$GLOBALS["permissions"]	= $data[6];
-				
+	
+				$_SESSION['file_mode']='brcp';
+				$_SESSION['credentials_brcp']['username']	= $credentials["username"];
+				$_SESSION['credentials_brcp']['domain']	= $credentials["domain"];
+				$GLOBALS["home_dir"]	= "/";
+				//$GLOBALS["home_url"]	= $data[3];
+				$GLOBALS["show_hidden"]	= 'Y';
+				//$GLOBALS["no_access"]	= $data[5];
+				$GLOBALS["permissions"]	= 7;
+
 				//die("User is signed in");
 				return true;
 			}
 		return false;
 	}
-	
+
 		function onShowLoginForm() {
 		?>
 	{
@@ -178,8 +167,10 @@ class ext_brcp_authentication
 	}
 	<?php
 	}
-	
+
 	function onLogout()
 	{
+		$_SESSION['credentials_brcp']['username'] = NULL;
+		logout();
 	}
 }

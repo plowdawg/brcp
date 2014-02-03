@@ -38,12 +38,17 @@ require_once _EXT_PATH."/include/users.php";
 ext_load_users();
 //------------------------------------------------------------------------------
 
+
 $GLOBALS['__SESSION']=&$_SESSION;
 if( !empty($_REQUEST['type'])) {
 	$GLOBALS['authentication_type'] = basename(extGetParam($_REQUEST, 'type', $GLOBALS['ext_conf']['authentication_method_default']));
 } else {
 	$GLOBALS['authentication_type'] = $GLOBALS['file_mode'];
+			
 }
+$firephp = FirePHP::getInstance(true);
+$firephp->setEnabled(true);
+$firephp->log($GLOBALS["file_mode"],"File Mode:");
 if($GLOBALS['authentication_type'] == 'file') {
 	$GLOBALS['authentication_type'] = 'extplorer';
 }
@@ -72,13 +77,17 @@ function login() {
 		
 		if( !empty($GLOBALS['__POST']['username'])) {
 			$username = $GLOBALS['__POST']['username'];
-			$password = $GLOBALS['__POST']['password'];
+			$domain = $GLOBALS['__POST']['domain'];
+			//$password = $GLOBALS['__POST']['password'];
 		} else {
 			$username = $_SESSION['credentials_'.$authentication_type]['username'];
-			$password = $_SESSION['credentials_'.$authentication_type]['password'];
+			$domain = $_SESSION['credentials_'.$authentication_type]['domain'];
 		}
-		
-		$res = $auth->onAuthenticate( array('username' => $username, 'password' => $password) );
+		$firephp = FirePHP::getInstance(true);
+		$firephp->setEnabled(true);
+		$firephp->log("about to authorize");
+		$res = $auth->onAuthenticate( array('username' => $username, 'domain' => $domain) );
+		$firephp->log($res,"Results");
 		if( !PEAR::isError($res) && $res !== false ) {
 			if( @$GLOBALS['__POST']['action'] == 'login' && ext_isXHR() ) {
 				session_write_close();
