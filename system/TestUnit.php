@@ -27,29 +27,29 @@ class TestUnit
 		}
 	}
 	
-	protected function assert_equals($real,$expected)
+	protected function assert_equals($message,$real,$expected)
 	{
 		if($real == $expected)
 		{
-			return '<span style="color: green">OK</span>';
+			return $message.' : <span style="color: green">OK</span><br />';
 		}
 		else
 		{
 			$debugArray = debug_backtrace();
-			echo '<span style="color:red;">Fail</span><pre>',print_r($this->obj),"</pre>";
+			echo $message.' : <span style="color:red;">Fail</span><pre>',print_r($this->obj),"</pre><br />";
 		}
 	}
 	
-	protected function assert_not_null($real)
+	protected function assert_not_null($message,$real)
 	{
 		if($real == NULL)
 		{
 			$debugArray = debug_backtrace();
-			echo '<span style="color:red;">Fail</span><pre>',print_r($this->obj),"</pre>";
+			echo $message.':<span style="color:red;">Fail</span><pre>',print_r($this->obj),"</pre>";
 		}
 		else
 		{
-			return '<span style="color: green">OK</span>';
+			return $message.'<span style="color: green">: OK</span><br />';
 		}
 	}
 }

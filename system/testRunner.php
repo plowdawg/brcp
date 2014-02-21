@@ -1,19 +1,24 @@
 <?php
 //run all the tests in the test director
+require("model.php");
+require("controller.php");
 require("../system/systemHelpers.php");
 require("TestUnit.php");
 external_file_loader("../config");
-external_file_loader("../controllers");
+require("../modules/".$config["database_adapter_module"].".php");
+//external_file_loader("../controllers");
 external_file_loader("../models");
 
 ?>
 <!DOCTYPE html>
 <head>
 <title> TEST RUNNER</title>
+<style>body{
+font-family: "Arial";font-size: 16pt;}</style>
 </head>
 <body>
 <?php
-external_file_tester("../tests");
+external_file_tester("../tests/");
 
 ?>
 </body>
