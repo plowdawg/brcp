@@ -74,7 +74,6 @@ function login() {
 		return false;
 	}
 	if( !empty($GLOBALS['__POST']['username']) || !empty($_SESSION['credentials_'.$authentication_type])) {
-		
 		if( !empty($GLOBALS['__POST']['username'])) {
 			$username = $GLOBALS['__POST']['username'];
 			$domain = $GLOBALS['__POST']['domain'];

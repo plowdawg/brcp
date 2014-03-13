@@ -14,8 +14,7 @@
 		<div id="action_panel">
 			<div class="action_item"><a href="./manage"><img src="../images/icons/user.png" alt="New User">Manage Users</a></div>
 			<div class="action_item"><img src="../images/icons/ruby.png" alt="install ruby">Manage Rubies</div>
-			<div class="action_item"><a href="../external_apps/filemanager/?username=<?php echo session_id() ?>&domain=<?php echo 
-			urlencode($prefix.$_SERVER["SERVER_NAME"].":$port".$config["base_uri"]); ?>" target="_blank"><img src="../images/icons/folder.png" alt="Folder" />File Manager</a></div>
+			<div class="action_item"><a href="filemanager_sign_in" target="_blank"><img src="../images/icons/folder.png" alt="Folder" />File Manager</a></div>
 			<div class="action_item"><a href="./sign_out"><img src="../images/icons/exit.png" alt="sign out">Sign Out</a></div>
 		</div>
 	</body>

@@ -31,7 +31,7 @@ class ext_brcp_authentication
 				$_SESSION['file_mode']='brcp';
 				$_SESSION['credentials_brcp']['username']	= $credentials["username"];
 				$_SESSION['credentials_brcp']['domain']	= $credentials["domain"];
-				$GLOBALS["home_dir"]	= "/";
+				$GLOBALS["home_dir"]	= $_SERVER["DOCUMENT_ROOT"];
 				//$GLOBALS["home_url"]	= $data[3];
 				$GLOBALS["show_hidden"]	= 'Y';
 				//$GLOBALS["no_access"]	= $data[5];

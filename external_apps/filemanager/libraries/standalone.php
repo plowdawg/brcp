@@ -63,7 +63,7 @@ class extMainFrame {
 	* @param string The path of the ext directory
 	*/
 	function extMainFrame() {
-		session_name( 'eXtplorer' );
+		session_name( 'brcp' );
 		if( !@is_writable(ini_get('session.save_path')) && ini_get('session.save_handler') == 'files') {
 			ini_set('session.save_path', realpath( dirname( __FILE__ ).'/../ftp_tmp') );
 		}

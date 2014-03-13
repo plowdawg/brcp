@@ -84,10 +84,6 @@ function show_header($dirlinks='') {
 		</td>";
 	//echo "</div>";
 	echo "<td style=\"padding-left: 15px; color:black;\" id=\"bookmark_container\" width=\"35%\"></td>\n";
-	echo "<td width=\"25%\" style=\"padding-left: 15px; color:black;\">"
-		.sprintf( $GLOBALS['messages']['switch_file_mode'], $mode . $logoutlink, implode(', ', $alternate_modes ) ). "
-	</td>\n";
-
 	echo '</tr></table>';
 	echo '</div>';
 }

@@ -5,6 +5,7 @@ Model > Controller then
 Controller > View*/
 require("systemHelpers.php");
 error_reporting(0);
+session_name( 'brcp' );
 @session_start();
 if(isset($_GET["zeus_uri"]))
 {
@@ -16,6 +17,7 @@ if(isset($_GET["zeus_uri"]))
 	//support for ID needs to be added and needs to be made into a router module.
 	
 	require("../config/database.php");
+	//require("../config/site.php");
 	require_once("../modules/".$config["database_adapter_module"].".php");
 	require("./Controller.php");
 	require("../controllers/ApplicationController.php");

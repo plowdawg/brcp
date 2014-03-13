@@ -108,4 +108,21 @@ class UsersController extends ApplicationController
 		$this->renderView($data);
 	}
 	
+	public function filemanager_sign_in()
+	{
+		global $config;
+		$prefix = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+	  	$port = isset($_SERVER["SERVER_PORT"]) ? $_SERVER["SERVER_PORT"] : 80;
+		$_SESSION['file_mode']='brcp';
+		$_SESSION['credentials_brcp']['username'] = session_id();
+		$_SESSION['credentials_brcp']['domain'] = $prefix.$_SERVER["SERVER_NAME"].":$port".$config["base_uri"];
+		$GLOBALS["home_dir"]	= $_SERVER["DOCUMENT_ROOT"];
+		//$GLOBALS["home_url"]	= $data[3];
+		$GLOBALS["show_hidden"]	= 'Y';
+		//$GLOBALS["no_access"]	= $data[5];
+		$GLOBALS["permissions"]	= 7;
+		header("location:../external_apps/filemanager/");
+	}
+	
+	
 }

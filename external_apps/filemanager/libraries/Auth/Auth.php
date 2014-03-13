@@ -520,7 +520,8 @@ class Auth {
         // #10729 - Regenerate session id here if we are generating it on every
         //          page load.
         if ($this->regenerateSessionId) {
-            session_regenerate_id(true);
+		//changed may be insecure.
+            session_regenerate_id(false);
         }
 
         $this->assignData();
@@ -827,7 +828,8 @@ class Auth {
         //          regenerate it twice in one request.
         if (!$this->regenerateSessionId) {
             // #2021 - Change the session id to avoid session fixation attacks php 4.3.3 >
-            session_regenerate_id(true);
+			//Changed
+            session_regenerate_id(false);
         }
 
         if (!isset($this->session) || !is_array($this->session)) {
